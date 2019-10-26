@@ -1,6 +1,7 @@
 <template>
   <div>
     <Table :columns="tableHeader" :data="tableData"></Table>
+    <van-pagination v-model="pageParams.page" :total-items="pageParams.totalCount" :items-per-page="10" />
   </div>
 </template>
 
@@ -74,33 +75,30 @@ export default {
           }
         }
       ],
-      tableData: [
-        {
-          name: "John Brown",
-          age: 18,
-          address: "New York No. 1 Lake Park",
-          date: "2016-10-03"
-        },
-        {
-          userInfo: "Jim Green",
-          age: 24,
-          address: "London No. 1 Lake Park",
-          date: "2016-10-01"
-        },
-        {
-          userInfo: "Joe Black",
-          age: 30,
-          address: "Sydney No. 1 Lake Park",
-          date: "2016-10-02"
-        },
-        {
-          userInfo: "Jon Snow",
-          age: 26,
-          address: "Ottawa No. 2 Lake Park",
-          date: "2016-10-04"
-        }
-      ]
+      tableData: [],
+      pageParams: {
+        page: 1,
+        pageSize: 10,
+        totalCount: 0,
+        params: {}
+      }
     };
+  },
+  mounted() {
+    var self = this;
+    this.$http
+      .post(this.$api.User.QueryPage, this.pageParams, false)
+      .then(res => {
+        var resData = res.data;
+        if (resData.code == 0) {
+          var pageData = resData.data;
+          self.tableData = pageData.list;
+          self.pageParams.totalCount = pageData.totalCount;
+        }
+      });
+  },
+  nextPage() {
+    
   }
 };
 </script>

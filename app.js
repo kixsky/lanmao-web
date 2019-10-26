@@ -13,7 +13,7 @@ app.use(cookieParser());
 
 app.all('/v1/*', function(req, res) {
 
-    const API = 'http://localhost:8182';
+    const API = 'http://localhost:8183';
 
     //代理
     proxy.web(req, res, {
