@@ -1,7 +1,16 @@
 <template>
   <div>
     <Table :columns="tableHeader" :data="tableData"></Table>
-    <van-pagination v-model="pageParams.page" :total-items="pageParams.totalCount" :items-per-page="10" />
+    <div>
+      <Page
+        :total="pageParams.totalCount"
+        :current="pageParams.page"
+        :page-size="pageParams.pageSize"
+        @on-change="nextPage"
+        show-sizer
+        class="dd-page"
+      />
+    </div>
   </div>
 </template>
 
@@ -13,7 +22,66 @@ export default {
       tableHeader: [
         {
           title: "会员信息",
-          key: "name"
+          key: "name",
+          render: (h, params) => {
+            console.log(params);
+            var row = params.row;
+            return h(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  width: "100%",
+                  height: "120px",
+                  padding: "10px 0 0 5px"
+                }
+              },
+              [
+                h("img", {
+                  attrs: {
+                    src: "https://file.iviewui.com/asd/asd-pro-3.png"
+                  },
+                  style: {
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "30px",
+                    margin: "25px 0 0 0"
+                  }
+                }),
+                h(
+                  "div",
+                  {
+                    style: {
+                      display: "block",
+                      textAlign: "center",
+                      margin: "25px 0 0 5px",
+                      fontSize: "10px"
+                    }
+                  },
+                  [
+                    h(
+                      "p",
+                      {
+                        style: {
+                          textAlign: "center"
+                        }
+                      },
+                      row.name
+                    ),
+                    h(
+                      "p",
+                      {
+                        style: {
+                          textAlign: "center"
+                        }
+                      },
+                      row.mobile
+                    )
+                  ]
+                )
+              ]
+            );
+          }
         },
         {
           title: "注册时间",
@@ -85,20 +153,26 @@ export default {
     };
   },
   mounted() {
-    var self = this;
-    this.$http
-      .post(this.$api.User.QueryPage, this.pageParams, false)
-      .then(res => {
-        var resData = res.data;
-        if (resData.code == 0) {
-          var pageData = resData.data;
-          self.tableData = pageData.list;
-          self.pageParams.totalCount = pageData.totalCount;
-        }
-      });
+    this.getUser();
   },
-  nextPage() {
-    
+  methods: {
+    getUser() {
+      var self = this;
+      this.$http
+        .post(this.$api.User.QueryPage, this.pageParams, false)
+        .then(res => {
+          var resData = res.data;
+          if (resData.code == 0) {
+            var pageData = resData.data;
+            self.tableData = pageData.list;
+            self.pageParams.totalCount = pageData.totalCount;
+          }
+        });
+    },
+    nextPage(nextPage) {
+      this.pageParams.page = nextPage;
+      this.getUser();
+    }
   }
 };
 </script>
@@ -107,5 +181,9 @@ export default {
 <style scoped>
 .center-me {
   margin: 0 auto;
+}
+.dd-page {
+  float: right;
+  margin: 10px;
 }
 </style>

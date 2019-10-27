@@ -21,7 +21,10 @@
           <MenuItem name="5" to="/user">
             <Icon type="ios-people" />用户管理
           </MenuItem>
-          <Submenu name="6">
+          <MenuItem name="6" to="/coupon">
+            <Icon type="ios-people" />优惠券
+          </MenuItem>
+          <Submenu name="7">
             <template slot="title">
               <Icon type="ios-stats" />统计分析
             </template>

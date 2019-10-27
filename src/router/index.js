@@ -34,6 +34,22 @@ const routes = [
                 }
             },
             {
+                path: '/order',
+                name: 'order',
+                component: () => import('../view/order'),
+                meta: {
+                    title: '订单管理'
+                }
+            },
+            {
+                path: '/coupon',
+                name: 'coupon',
+                component: () => import('../view/coupon'),
+                meta: {
+                    title: '优惠券'
+                }
+            },
+            {
                 path: '/desk',
                 name: 'desk',
                 component: () => import('../view/desk'),
