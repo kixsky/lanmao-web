@@ -153,13 +153,13 @@ export default {
     };
   },
   mounted() {
-    this.getUser();
+    this.getMech();
   },
   methods: {
-    getUser() {
+    getMech() {
       var self = this;
       this.$http
-        .post(this.$api.User.QueryPage, this.pageParams, false)
+        .post(this.$api.Mech.List, this.pageParams, false)
         .then(res => {
           var resData = res.data;
           if (resData.code == 0) {
@@ -171,7 +171,7 @@ export default {
     },
     nextPage(nextPage) {
       this.pageParams.page = nextPage;
-      this.getUser();
+      this.getMech();
     }
   }
 };

@@ -4,5 +4,11 @@ export default {
     },
     DepMember: {
         Login: '/v1/depMember/login'
+    },
+    Mech: {
+        List: '/v1/mech/list'
+    },
+    Order: {
+        QueryPage: '/v1/order/list'
     }
 }
