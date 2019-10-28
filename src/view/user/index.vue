@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="div-btn">
+      <Button type="info" @click="modal6 = true" class="new-mech">新增用户</Button>
+    </div>
     <Table :columns="tableHeader" :data="tableData"></Table>
     <div>
       <Page
@@ -11,6 +14,10 @@
         class="dd-page"
       />
     </div>
+    <!-- 技师弹窗 -->
+    <Modal v-model="modal6" :title="mechTitle" :loading="loading" @on-ok="asyncOK">
+      <p>After you click ok, the dialog box will close in 2 seconds.</p>
+    </Modal>
   </div>
 </template>
 
@@ -149,7 +156,10 @@ export default {
         pageSize: 10,
         totalCount: 0,
         params: {}
-      }
+      },
+      mechTitle: "新增技师",
+      modal6: false,
+      loading: true
     };
   },
   mounted() {
@@ -172,18 +182,30 @@ export default {
     nextPage(nextPage) {
       this.pageParams.page = nextPage;
       this.getUser();
+    },
+    asyncOK() {
+      setTimeout(() => {
+        this.modal6 = false;
+      }, 2000);
     }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .center-me {
   margin: 0 auto;
 }
 .dd-page {
   float: right;
   margin: 10px;
+}
+.div-btn {
+  height: 50px;
+  .new-mech {
+    float: right;
+    margin: 5px 10px 0 0;
+  }
 }
 </style>
