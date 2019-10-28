@@ -4,8 +4,8 @@
       <div class="dr_title">我是Title</div>
     </Row>
     <Row>
-      <Col span="4">
-        <Menu :theme="theme1" active-name="1">
+      <Col span="3">
+        <Menu theme="light" active-name="1" width="auto">
           <MenuItem name="1" to="/desk">
             <Icon type="ios-paper" />控制台
           </MenuItem>
@@ -43,7 +43,7 @@
           </MenuItem>
         </Menu>
       </Col>
-      <Col span="20">
+      <Col span="21">
         <router-view />
       </Col>
     </Row>
