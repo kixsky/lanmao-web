@@ -11,7 +11,7 @@ import api from './http/api';
 import store from './store';
 
 //css
-import './css/common.css'
+import './css/main.scss'
 
 Vue.use(ViewUI);
 // 对后端接口 进行全局注册
