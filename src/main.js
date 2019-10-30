@@ -8,6 +8,7 @@ Vue.config.productionTip = false
 import './http/axios'
 import http from './http/http';
 import api from './http/api';
+import store from './store';
 
 //css
 import './css/common.css'
@@ -21,5 +22,6 @@ Vue.prototype.$http = http;
 
 new Vue({
   router,
+  store,  
   render: h => h(App),
 }).$mount('#app')
