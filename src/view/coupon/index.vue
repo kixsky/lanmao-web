@@ -15,8 +15,69 @@
       />
     </div>
     <!-- 技师弹窗 -->
-    <Modal v-model="modal6" :title="mechTitle" :loading="loading" @on-ok="asyncOK">
-      <p>After you click ok, the dialog box will close in 2 seconds.</p>
+    <Modal v-model="modal6" :title="mechTitle" width="650" :loading="loading" @on-ok="asyncOK">
+      <Row align="middle" justify="center">
+        <Col span="4">
+          <span class="tt">优惠券名称</span>
+        </Col>
+        <Col span="20">
+          <Input v-model="couponData.name" placeholder="优惠券名称" style="width: 300px"></Input>
+        </Col>
+      </Row>
+      <Row align="middle" justify="center" class-name="tl">
+        <Col span="4">
+          <span class="tt">生效日期起期</span>
+        </Col>
+        <Col span="20">
+          <DatePicker
+            v-model="couponData.effectiveDate"
+            type="date"
+            placeholder="生效日期起期"
+            style="width: 300px"
+          ></DatePicker>
+        </Col>
+      </Row>
+      <Row align="middle" justify="center" class-name="tl">
+        <Col span="4">
+          <span class="tt">生效日期止期</span>
+        </Col>
+        <Col span="20">
+          <DatePicker
+            v-model="couponData.expiryDate"
+            type="date"
+            placeholder="生效日期止期"
+            style="width: 300px"
+          ></DatePicker>
+        </Col>
+      </Row>
+      <Row align="middle" justify="center" class-name="tl">
+        <Col span="4">
+          <span class="tt">优惠金额</span>
+        </Col>
+        <Col span="20">
+          <Input v-model="couponData.discount" placeholder="优惠金额" style="width: 300px"></Input>
+        </Col>
+      </Row>
+      <Row align="middle" justify="center" class-name="tl">
+        <Col span="4">
+          <span class="tt">优惠规则</span>
+        </Col>
+        <Col span="20">
+          <Select v-model="couponData.ruleCode" style="width:200px">
+            <Option v-for="item in ruleList" :value="item.code" :key="item.code">{{ item.name }}</Option>
+          </Select>
+        </Col>
+      </Row>
+      <Row align="middle" justify="center" class-name="tl">
+        <Col span="4">
+          <span class="tt">优惠券类型</span>
+        </Col>
+        <Col span="20">
+          <Select v-model="couponData.type" style="width:200px">
+            <Option v-for="item in typeList" :value="item.type" :key="item.type">{{ item.name }}</Option>
+          </Select>
+        </Col>
+      </Row>
     </Modal>
   </div>
 </template>
@@ -157,19 +218,40 @@ export default {
         totalCount: 0,
         params: {}
       },
-      mechTitle: "新增技师",
+      mechTitle: "新增优惠券",
       modal6: false,
-      loading: true
+      loading: true,
+      couponData: {
+        name: "",
+        effectiveDate: "",
+        expiryDate: "",
+        discount: "",
+        type: '',
+        ruleCode: '',
+        ruleName: ''
+      },
+      ruleList: [
+        {
+          name: '无门槛使用',
+          code: '1'
+        }
+      ],
+      typeList: [
+        {
+          name: '到家优惠券',
+          type: 1
+        }
+      ]
     };
   },
   mounted() {
-    this.getUser();
+    this.getCoupon();
   },
   methods: {
-    getUser() {
+    getCoupon() {
       var self = this;
       this.$http
-        .post(this.$api.User.QueryPage, this.pageParams, false)
+        .post(this.$api.Coupon.QueryPage, this.pageParams, false)
         .then(res => {
           var resData = res.data;
           if (resData.code == 0) {
@@ -181,12 +263,26 @@ export default {
     },
     nextPage(nextPage) {
       this.pageParams.page = nextPage;
-      this.getUser();
+      this.getCoupon();
     },
     asyncOK() {
-      setTimeout(() => {
-        this.modal6 = false;
-      }, 2000);
+      this.addCoupon();
+    },
+    addCoupon() {
+      var self = this;
+      this.couponData.effectiveDate = this.$utils.dateFormat("YYYY-mm-dd HH:MM:SS", this.couponData.effectiveDate);
+      this.couponData.expiryDate = this.$utils.dateFormat("YYYY-mm-dd HH:MM:SS", this.couponData.expiryDate);
+      this.$http
+        .post(this.$api.Coupon.AddCoupon, this.couponData, false)
+        .then(res => {
+          var resData = res.data;
+          // self.loading = false;
+          if (resData.code == 0) {
+            self.modal6 = false;
+          } else {
+            self.$Message.error(resData.message);
+          }
+        })
     }
   }
 };
@@ -200,5 +296,11 @@ export default {
 .dd-page {
   float: right;
   margin: 10px;
+}
+.tt {
+  margin-right: 5px;
+}
+.tl {
+  margin-top: 10px;
 }
 </style>

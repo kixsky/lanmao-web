@@ -9,6 +9,7 @@ import './http/axios'
 import http from './http/http';
 import api from './http/api';
 import store from './store';
+import utils from './utils';
 
 //css
 import './css/main.scss'
@@ -18,6 +19,7 @@ Vue.use(ViewUI);
 Vue.prototype.$api = api;
 // 对请求方式 进行全局注册
 Vue.prototype.$http = http;
+Vue.prototype.$utils = utils;
 
 
 new Vue({

@@ -58,7 +58,7 @@ export default {
 .main-div {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 700px;
   background: url(../../assets/bg.jpeg) no-repeat 50%;
 }
 .ms-login {
